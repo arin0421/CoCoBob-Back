@@ -44,4 +44,10 @@ public class BoardController {
         return boardService.update(id,requestDto);
     }
 
+    @DeleteMapping("/api/boards/{id}")
+    public Long deleteBoard(@PathVariable Long id){
+        boardRepository.deleteById(id);
+        return id;
+    }
+
 }

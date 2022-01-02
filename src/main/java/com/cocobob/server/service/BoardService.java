@@ -21,7 +21,7 @@ public class BoardService {
         return boardRepository.findAll(pageable);
     }
 
-    @Transactional 
+    @Transactional
     public Long update(Long id, BoardRequestDto requestDto) {
         Board board1 = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 아이디가 존재하지 않습니다.")
