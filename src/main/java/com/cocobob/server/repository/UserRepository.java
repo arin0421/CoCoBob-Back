@@ -1,5 +1,6 @@
 package com.cocobob.server.repository;
 
+import com.cocobob.server.domain.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
