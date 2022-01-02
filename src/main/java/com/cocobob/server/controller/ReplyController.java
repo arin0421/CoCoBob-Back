@@ -5,11 +5,9 @@ import com.cocobob.server.domain.Reply;
 import com.cocobob.server.repository.BoardRepository;
 import com.cocobob.server.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -25,6 +23,12 @@ public class ReplyController {
         reply.setBoard(boardItem.get());
         replyRepository.save(reply);
         return reply;
+    }
+
+    @GetMapping("/api/boards/{id}/reply")
+    public List<Reply> getreplys(@PathVariable Long id) {
+        Board board = boardRepository.findById(id).get();
+        return replyRepository.findReplyByBoard(board);
     }
 
 }
