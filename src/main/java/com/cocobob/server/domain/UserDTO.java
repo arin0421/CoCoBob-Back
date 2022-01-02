@@ -1,5 +1,6 @@
-package com.cocobob.server.dto;
+package com.cocobob.server.domain;
 
+import com.cocobob.server.dto.AuthorityDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
