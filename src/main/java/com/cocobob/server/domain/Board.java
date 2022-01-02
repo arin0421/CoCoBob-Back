@@ -1,6 +1,11 @@
 package com.cocobob.server.domain;
 
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
 @Getter
 @NoArgsConstructor
 @Entity
@@ -52,6 +57,13 @@ public class Board {
         this.contents = contents;
         this.tag = tag;
         this.deadline = deadline;
+    }
+
+    public void update(BoardRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.username = requestDto.getUsername();
+        this.contents = requestDto.getContents();
+        this.tag = requestDto.getTag();
     }
 
 }

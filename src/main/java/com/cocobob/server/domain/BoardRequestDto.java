@@ -1,5 +1,10 @@
 package com.cocobob.server.domain;
 
+import lombok.Setter;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+
 @Setter
 @Getter
 @RequiredArgsConstructor
