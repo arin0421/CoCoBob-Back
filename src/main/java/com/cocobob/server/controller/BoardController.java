@@ -11,4 +11,13 @@ public class BoardController {
         return boardRepository.save(board);
     }
 
+    @GetMapping("/api/boards/{id}")
+    public Board getBoard(@PathVariable Long id){
+        Optional<Board> board = boardRepository.findById(id);
+
+        return board.get();
+    }
+    
+
+
 }
