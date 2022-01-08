@@ -1,7 +1,7 @@
 package com.cocobob.server.controller;
 
-import com.cocobob.server.dto.LoginDTO;
-import com.cocobob.server.dto.TokenDTO;
+import com.cocobob.server.domain.LoginDTO;
+import com.cocobob.server.domain.TokenDTO;
 import com.cocobob.server.jwt.JwtFilter;
 import com.cocobob.server.jwt.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;

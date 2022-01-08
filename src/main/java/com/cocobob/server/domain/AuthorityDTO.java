@@ -1,4 +1,4 @@
-package com.cocobob.server.dto;
+package com.cocobob.server.domain;
 
 import lombok.*;
 
