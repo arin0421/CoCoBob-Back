@@ -4,11 +4,13 @@ import com.cocobob.server.domain.Board;
 import com.cocobob.server.domain.BoardRequestDto;
 import com.cocobob.server.repository.BoardRepository;
 import com.cocobob.server.service.BoardService;
+import com.cocobob.server.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -21,9 +23,12 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping("/api/boards")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public Board createBoard(@RequestBody BoardRequestDto requestDto){
         Board board = new Board(requestDto);
-
+        Optional<String> name = SecurityUtil.getCurrentUsername();
+        //String username = String.valueOf(SecurityUtil.getCurrentUsername());
+        board.setUsername(name.get());
         return boardRepository.save(board);
     }
 
