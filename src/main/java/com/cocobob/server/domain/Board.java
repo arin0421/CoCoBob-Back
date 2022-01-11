@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Getter
 @NoArgsConstructor
@@ -27,6 +28,7 @@ public class Board {
     @Column(nullable = true)
     private String tag;
 
+
     @Column(nullable = false)
     private String deadline;
 
@@ -34,26 +36,29 @@ public class Board {
         return id;
     }
 
-    //  @OneToMany(mappedBy = "board")
+    public void setUsername(String username) {
+        this.username = username;
+    }
+//  @OneToMany(mappedBy = "board")
 //    private List<Reply> reply;
 
     public Board(BoardRequestDto requestDto) {
         this.title = requestDto.getTitle();
-        this.username = requestDto.getUsername();
+        //this.username = requestDto.getUsername();
         this.contents = requestDto.getContents();
         this.tag = requestDto.getTag();
         this.deadline = requestDto.getDeadline();
     }
 
-    public Board(String title, String username, String contents) {
+    public Board(String title, Optional<String> username, String contents) {
         this.title = title;
-        this.username = username;
+        //this.username = username;
         this.contents = contents;
     }
 
     public Board(String title, String username, String contents, String tag, String deadline) {
         this.title = title;
-        this.username = username;
+        //this.username = username;
         this.contents = contents;
         this.tag = tag;
         this.deadline = deadline;
@@ -61,9 +66,10 @@ public class Board {
 
     public void update(BoardRequestDto requestDto) {
         this.title = requestDto.getTitle();
-        this.username = requestDto.getUsername();
+        //this.username = requestDto.getUsername();
         this.contents = requestDto.getContents();
         this.tag = requestDto.getTag();
     }
+
 
 }
