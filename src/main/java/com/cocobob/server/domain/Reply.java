@@ -17,8 +17,14 @@ public class Reply {
     @Column(name="reply_id")
     private long rno;
 
+    @Column(nullable = false)
+    private String username;
+
     public void setBoard(Board board) {
         this.board = board;
+    }
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Column
