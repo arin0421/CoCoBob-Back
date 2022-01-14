@@ -35,7 +35,7 @@ public class BoardController {
     @GetMapping("/api/boards/{id}")
     public Board getBoard(@PathVariable Long id){
         Optional<Board> board = boardRepository.findById(id);
-
+        boardService.updateView(id);
         return board.get();
     }
 
