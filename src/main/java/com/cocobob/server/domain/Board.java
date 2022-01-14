@@ -28,6 +28,10 @@ public class Board {
     @Column(nullable = true)
     private String tag;
 
+    @Column(nullable = true)
+    private int view;
+
+
 
     @Column(nullable = false)
     private String deadline;

@@ -30,4 +30,10 @@ public class BoardService {
         return board1.getId();
     }
 
+    /* 조회수 카운트 */
+    @Transactional
+    public int updateView(Long id){
+        return boardRepository.updateView(id);
+    }
+
 }
