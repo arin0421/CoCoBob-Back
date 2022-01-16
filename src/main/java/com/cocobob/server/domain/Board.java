@@ -33,9 +33,6 @@ public class Board {
 
 
 
-    @Column(nullable = false)
-    private String deadline;
-
     public Long getId() {
         return id;
     }
@@ -51,7 +48,7 @@ public class Board {
         //this.username = requestDto.getUsername();
         this.contents = requestDto.getContents();
         this.tag = requestDto.getTag();
-        this.deadline = requestDto.getDeadline();
+       // this.deadline = requestDto.getDeadline();
     }
 
     public Board(String title, Optional<String> username, String contents) {
@@ -65,7 +62,7 @@ public class Board {
         //this.username = username;
         this.contents = contents;
         this.tag = tag;
-        this.deadline = deadline;
+       // this.deadline = deadline;
     }
 
     public void update(BoardRequestDto requestDto) {
