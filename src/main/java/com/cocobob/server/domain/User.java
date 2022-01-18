@@ -27,24 +27,6 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "nickname")
-    private String nickname;
-
-    @Column(name = "sex")
-    private String sex;
-
-    @Column(name = "rating")
-    private double rating;
-
-    @Column(name = "birth")
-    private String birth;
-
-    @Column(name = "cnt")
-    private float cnt;
-
-    @Column(name = "activated")
-    private boolean activated;
-
     @ManyToMany
     @JoinTable(
             name = "user_authority", //연결테이블 이름

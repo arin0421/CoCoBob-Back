@@ -23,7 +23,7 @@ public class JwtFilter extends GenericFilterBean {
 
     private TokenProvider tokenProvider;
 
-    public JwtFilter(TokenProvider tokenProvider){
+    public JwtFilter(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
     }
 
