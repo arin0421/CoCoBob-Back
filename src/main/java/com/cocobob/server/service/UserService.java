@@ -58,4 +58,38 @@ public class UserService {
     public UserDTO getMyUserWithAuthorities() {
         return UserDTO.from(SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByUsername).orElse(null));
     }
+
+    @Transactional(readOnly = true)
+    public String verifyPassword(String username, String password) {
+        if (userRepository.findOneWithAuthoritiesByUsername(username).orElse(null) == null) {
+            return "패스워드를 변경할 권한이 없습니다.";
+        }
+
+        User user = userRepository.findByUsername(username);
+
+        if (passwordEncoder.matches(password,user.getPassword())) {
+            return "패스워드 일치";
+        }
+        else{
+            return "패스워드 불일치";
+        }
+    }
+
+    @Transactional
+    public String updatePassword(String username, String password) throws DuplicateMemberException {
+        User temp = userRepository.findByUsername(username);
+
+        if (userRepository.findOneWithAuthoritiesByUsername(username).orElse(null) == null){
+            throw new DuplicateMemberException("존재하지 않는 아이디입니다.");
+        }
+        User user = User.builder()
+                .userId(temp.getUserId())
+                .username(username)
+                .password(passwordEncoder.encode(password))
+                .authorities(temp.getAuthorities())
+                .build();
+        userRepository.save(user);
+
+        return "패스워드를 변경하였습니다.";
+    }
 }

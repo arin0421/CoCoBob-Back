@@ -58,5 +58,20 @@ public class UserController {
         String email = username.get();
         return mailService.sendMail(email);
     }
+
+    @GetMapping("/verifyPassword/{currentPassword}")
+    @PreAuthorize("hasAnyRole('USER')")
+    public String verifyPassword(@PathVariable String currentPassword){
+        Optional<String> username = SecurityUtil.getCurrentUsername();
+        return userService.verifyPassword(username.get(), currentPassword);
+    }
+
+    @PostMapping("/updatePassword/{password}")
+    @PreAuthorize("hasAnyRole('USER')")
+    public String updatePassword(@PathVariable String password) throws DuplicateMemberException {
+        Optional<String> username = SecurityUtil.getCurrentUsername();
+        return userService.updatePassword(username.get(), password);
+    }
+
 }
 

@@ -38,6 +38,7 @@ public class MailService {
                     .userId(user1.getUserId())
                     .username(email)
                     .password(passwordEncoder.encode(pw))
+                    .authorities(user1.getAuthorities())
                     .build();
 
             userRepository.save(user);
