@@ -15,7 +15,7 @@ import static org.springframework.http.HttpStatus.CONFLICT;
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(CONFLICT)
-    @ExceptionHandler(value = { DuplicateMemberException.class })
+    @ExceptionHandler(value = {DuplicateMemberException.class})
     @ResponseBody
     protected ErrorDTO badRequest(RuntimeException ex, WebRequest request) {
         return new ErrorDTO(CONFLICT.value(), ex.getMessage());
