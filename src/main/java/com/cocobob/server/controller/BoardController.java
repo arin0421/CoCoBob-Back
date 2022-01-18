@@ -11,8 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -55,4 +57,12 @@ public class BoardController {
         return id;
     }
 
+    @GetMapping("/api/boards/search")
+    public Page<Board> search(@RequestParam(value = "keyword") String keyword, @PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable) {
+
+        //Page<Board> searchList=boardService.search(keyword,pageable);
+         //model.addAttribute("searchList",searchList);
+
+         return boardService.search(keyword,pageable);
+    }
 }

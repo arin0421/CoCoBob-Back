@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -36,4 +38,10 @@ public class BoardService {
         return boardRepository.updateView(id);
     }
 
+    /* 검색 기능 */
+    @Transactional
+    public Page<Board> search(String keyword,Pageable pageable){
+       Page<Board> BoardList = boardRepository.findAllSearch(keyword,pageable);
+       return BoardList;
+    }
 }
