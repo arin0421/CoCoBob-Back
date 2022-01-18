@@ -1,6 +1,7 @@
 package com.cocobob.server.controller;
 
 import com.cocobob.server.domain.UserDTO;
+import com.cocobob.server.mail.MailService;
 import com.cocobob.server.service.UserService;
 import com.cocobob.server.util.SecurityUtil;
 import javassist.bytecode.DuplicateMemberException;
@@ -18,6 +19,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private MailService mailService;
 
     //회원가입
     @PostMapping("/signup")
@@ -45,6 +48,15 @@ public class UserController {
         Optional<String> username = SecurityUtil.getCurrentUsername();
 
         return username;
+    }
+
+    @GetMapping("/findpassword")
+    @PreAuthorize("hasAnyRole('USER')")
+    public String findPassword(){
+
+        Optional<String> username = SecurityUtil.getCurrentUsername();
+        String email = username.get();
+        return mailService.sendMail(email);
     }
 }
 
