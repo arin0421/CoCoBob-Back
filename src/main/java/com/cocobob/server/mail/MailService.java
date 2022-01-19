@@ -21,6 +21,8 @@ public class MailService {
     public String sendMail(String email){
 
         User user1 = userRepository.findByUsername(email);
+
+        System.out.println(userRepository.findOneWithAuthoritiesByUsername(email));
         if(userRepository.findOneWithAuthoritiesByUsername(email).orElse(null) != null) {
 
             String pw = "";

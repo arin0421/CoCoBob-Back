@@ -50,27 +50,19 @@ public class UserController {
         return username;
     }
 
-    @GetMapping("/findpassword")
-    @PreAuthorize("hasAnyRole('USER')")
-    public String findPassword(){
-
-        Optional<String> username = SecurityUtil.getCurrentUsername();
-        String email = username.get();
-        return mailService.sendMail(email);
+    @GetMapping("/findPassword/{username}")
+    public String sendCode(@PathVariable String username){
+        return mailService.sendMail(username);
     }
 
-    @GetMapping("/verifyPassword/{currentPassword}")
-    @PreAuthorize("hasAnyRole('USER')")
-    public String verifyPassword(@PathVariable String currentPassword){
-        Optional<String> username = SecurityUtil.getCurrentUsername();
-        return userService.verifyPassword(username.get(), currentPassword);
+    @GetMapping("/findPassword/verifyCode")
+    public String verifyPassword(@RequestBody UserDTO userDTO){
+        return userService.verifyPassword(userDTO);
     }
 
-    @PostMapping("/updatePassword/{password}")
-    @PreAuthorize("hasAnyRole('USER')")
-    public String updatePassword(@PathVariable String password) throws DuplicateMemberException {
-        Optional<String> username = SecurityUtil.getCurrentUsername();
-        return userService.updatePassword(username.get(), password);
+    @PostMapping("/findPassword/updatePassword")
+    public String updatePassword(@RequestBody UserDTO userDTO) throws DuplicateMemberException {
+        return userService.updatePassword(userDTO);
     }
 
 }

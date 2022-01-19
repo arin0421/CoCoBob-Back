@@ -60,7 +60,11 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public String verifyPassword(String username, String password) {
+    public String verifyPassword(UserDTO userDTO) {
+
+        String username = userDTO.getUsername();
+        String password = userDTO.getPassword();
+
         if (userRepository.findOneWithAuthoritiesByUsername(username).orElse(null) == null) {
             return "패스워드를 변경할 권한이 없습니다.";
         }
@@ -76,7 +80,10 @@ public class UserService {
     }
 
     @Transactional
-    public String updatePassword(String username, String password) throws DuplicateMemberException {
+    public String updatePassword(UserDTO userDTO) throws DuplicateMemberException {
+        String username = userDTO.getUsername();
+        String password = userDTO.getPassword();
+
         User temp = userRepository.findByUsername(username);
 
         if (userRepository.findOneWithAuthoritiesByUsername(username).orElse(null) == null){
