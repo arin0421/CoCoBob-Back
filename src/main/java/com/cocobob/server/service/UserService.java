@@ -39,11 +39,7 @@ public class UserService {
         User user = User.builder()
                 .username(userDto.getUsername())
                 .password(passwordEncoder.encode(userDto.getPassword()))
-                .nickname(userDto.getNickname())
-                .sex(userDto.getSex())
-                .birth(userDto.getBirth())
                 .authorities(Collections.singleton(authority))
-                .activated(true)
                 .build();
 
         //새로 가입한 회원 정보 DB에 저장

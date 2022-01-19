@@ -41,7 +41,7 @@ public class UserController {
 
     @GetMapping("/getUsername")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public Optional<String> getUsername(){
+    public Optional<String> getUsername() {
         Optional<String> username = SecurityUtil.getCurrentUsername();
 
         return username;
