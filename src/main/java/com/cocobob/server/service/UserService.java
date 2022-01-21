@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 @Service
 public class UserService {
@@ -57,5 +59,50 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserDTO getMyUserWithAuthorities() {
         return UserDTO.from(SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByUsername).orElse(null));
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<String> verifyPassword(UserDTO userDTO) {
+
+        String username = userDTO.getUsername();
+        String password = userDTO.getPassword();
+
+        String msg = null;
+        if (userRepository.findOneWithAuthoritiesByUsername(username).orElse(null) == null) {
+            return Optional.of(msg);
+        }
+
+        Optional<User> user = userRepository.findByUsername(username);
+
+        if (passwordEncoder.matches(password, user.get().getPassword())) {
+            return Optional.ofNullable("인증코드 일치");
+        }
+        else{
+            return Optional.of(msg);
+        }
+    }
+
+    @Transactional
+    public Optional<String> updatePassword(UserDTO userDTO) {
+        String username = userDTO.getUsername();
+        String password = userDTO.getPassword();
+
+        Optional<User> temp = userRepository.findByUsername(username);
+
+        if (userRepository.findOneWithAuthoritiesByUsername(username).orElse(null) != null) {
+
+            User user = User.builder()
+                    .userId(temp.get().getUserId())
+                    .username(username)
+                    .password(passwordEncoder.encode(password))
+                    .authorities(temp.get().getAuthorities())
+                    .build();
+            userRepository.save(user);
+
+            return Optional.of("패스워드를 변경하였습니다.");
+        }
+        else{
+            return Optional.of(null);
+        }
     }
 }

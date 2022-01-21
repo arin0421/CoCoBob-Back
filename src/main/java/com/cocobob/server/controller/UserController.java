@@ -1,10 +1,12 @@
 package com.cocobob.server.controller;
 
 import com.cocobob.server.domain.UserDTO;
+import com.cocobob.server.mail.MailService;
 import com.cocobob.server.service.UserService;
 import com.cocobob.server.util.SecurityUtil;
 import javassist.bytecode.DuplicateMemberException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private MailService mailService;
 
     //회원가입
     @PostMapping("/signup")
@@ -46,5 +50,22 @@ public class UserController {
 
         return username;
     }
+
+    @GetMapping("/findPassword/{username}")
+    public ResponseEntity<UserDTO> sendCode(@PathVariable String username){
+            return ResponseEntity.ok(mailService.sendMail(username));
+    }
+
+    @GetMapping("/findPassword/verifyCode")
+    public Optional<String> verifyPassword(@RequestBody UserDTO userDTO){
+        return userService.verifyPassword(userDTO);
+    }
+
+    @PostMapping("/findPassword/updatePassword")
+    public Optional<String> updatePassword(@RequestBody UserDTO userDTO) throws DuplicateMemberException {
+
+        return userService.updatePassword(userDTO);
+    }
+
 }
 
