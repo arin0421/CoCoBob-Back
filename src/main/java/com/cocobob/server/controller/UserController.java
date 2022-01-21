@@ -6,6 +6,7 @@ import com.cocobob.server.service.UserService;
 import com.cocobob.server.util.SecurityUtil;
 import javassist.bytecode.DuplicateMemberException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -51,17 +52,18 @@ public class UserController {
     }
 
     @GetMapping("/findPassword/{username}")
-    public String sendCode(@PathVariable String username){
-        return mailService.sendMail(username);
+    public ResponseEntity<UserDTO> sendCode(@PathVariable String username){
+            return ResponseEntity.ok(mailService.sendMail(username));
     }
 
     @GetMapping("/findPassword/verifyCode")
-    public String verifyPassword(@RequestBody UserDTO userDTO){
+    public Optional<String> verifyPassword(@RequestBody UserDTO userDTO){
         return userService.verifyPassword(userDTO);
     }
 
     @PostMapping("/findPassword/updatePassword")
-    public String updatePassword(@RequestBody UserDTO userDTO) throws DuplicateMemberException {
+    public Optional<String> updatePassword(@RequestBody UserDTO userDTO) throws DuplicateMemberException {
+
         return userService.updatePassword(userDTO);
     }
 

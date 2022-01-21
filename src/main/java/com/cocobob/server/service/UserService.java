@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 @Service
 public class UserService {
@@ -60,43 +62,47 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public String verifyPassword(UserDTO userDTO) {
+    public Optional<String> verifyPassword(UserDTO userDTO) {
 
         String username = userDTO.getUsername();
         String password = userDTO.getPassword();
 
+        String msg = null;
         if (userRepository.findOneWithAuthoritiesByUsername(username).orElse(null) == null) {
-            return "패스워드를 변경할 권한이 없습니다.";
+            return Optional.of(msg);
         }
 
-        User user = userRepository.findByUsername(username);
+        Optional<User> user = userRepository.findByUsername(username);
 
-        if (passwordEncoder.matches(password,user.getPassword())) {
-            return "패스워드 일치";
+        if (passwordEncoder.matches(password, user.get().getPassword())) {
+            return Optional.ofNullable("인증코드 일치");
         }
         else{
-            return "패스워드 불일치";
+            return Optional.of(msg);
         }
     }
 
     @Transactional
-    public String updatePassword(UserDTO userDTO) throws DuplicateMemberException {
+    public Optional<String> updatePassword(UserDTO userDTO) {
         String username = userDTO.getUsername();
         String password = userDTO.getPassword();
 
-        User temp = userRepository.findByUsername(username);
+        Optional<User> temp = userRepository.findByUsername(username);
 
-        if (userRepository.findOneWithAuthoritiesByUsername(username).orElse(null) == null){
-            throw new DuplicateMemberException("존재하지 않는 아이디입니다.");
+        if (userRepository.findOneWithAuthoritiesByUsername(username).orElse(null) != null) {
+
+            User user = User.builder()
+                    .userId(temp.get().getUserId())
+                    .username(username)
+                    .password(passwordEncoder.encode(password))
+                    .authorities(temp.get().getAuthorities())
+                    .build();
+            userRepository.save(user);
+
+            return Optional.of("패스워드를 변경하였습니다.");
         }
-        User user = User.builder()
-                .userId(temp.getUserId())
-                .username(username)
-                .password(passwordEncoder.encode(password))
-                .authorities(temp.getAuthorities())
-                .build();
-        userRepository.save(user);
-
-        return "패스워드를 변경하였습니다.";
+        else{
+            return Optional.of(null);
+        }
     }
 }

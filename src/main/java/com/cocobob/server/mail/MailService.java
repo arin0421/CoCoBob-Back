@@ -1,12 +1,15 @@
 package com.cocobob.server.mail;
 
 import com.cocobob.server.domain.User;
+import com.cocobob.server.domain.UserDTO;
 import com.cocobob.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class MailService {
@@ -18,12 +21,13 @@ public class MailService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public String sendMail(String email){
+    public UserDTO sendMail(String email){
 
-        User user1 = userRepository.findByUsername(email);
+        Optional<User> user1 = userRepository.findOneWithAuthoritiesByUsername(email);
 
-        System.out.println(userRepository.findOneWithAuthoritiesByUsername(email));
-        if(userRepository.findOneWithAuthoritiesByUsername(email).orElse(null) != null) {
+        Optional<UserDTO> userDTO = Optional.ofNullable(UserDTO.from(user1.get()));
+
+        if(user1.orElse(null) != null) {
 
             String pw = "";
             for (int i = 0; i < 12; i++) {
@@ -37,19 +41,21 @@ public class MailService {
             simpleMailMessage.setText(pw);
 
             User user = User.builder()
-                    .userId(user1.getUserId())
+                    .userId(user1.get().getUserId())
                     .username(email)
                     .password(passwordEncoder.encode(pw))
-                    .authorities(user1.getAuthorities())
+                    .authorities(user1.get().getAuthorities())
                     .build();
-
-            userRepository.save(user);
 
             javaMailSender.send(simpleMailMessage);
 
-            return "임시 비밀번호 발급 성공";
+            Optional<UserDTO> dto = Optional.ofNullable(UserDTO.from(user));
+
+            return dto.get();
         }
-        else return "임시 비밀번호 발급 실패";
+        else {
+            return userDTO.get();
+        }
     }
 
 }
