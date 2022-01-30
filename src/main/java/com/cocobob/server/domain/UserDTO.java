@@ -21,16 +21,6 @@ public class UserDTO {
     @NotNull
     private String password;
 
-    @NotNull
-
-    private String nickname;
-
-    @NotNull
-    private String sex;
-
-    @NotNull
-    private String birth;
-
     private Set<AuthorityDTO> authorityDtoSet;
 
     public static UserDTO from(User user) {
@@ -38,9 +28,6 @@ public class UserDTO {
 
         return UserDTO.builder()
                 .username(user.getUsername())
-                .nickname(user.getNickname())
-                .sex(user.getSex())
-                .birth(user.getBirth())
                 .authorityDtoSet(user.getAuthorities().stream()
                         .map(authority -> AuthorityDTO.builder().authorityName(authority.getAuthorityName()).build())
                         .collect(Collectors.toSet()))
