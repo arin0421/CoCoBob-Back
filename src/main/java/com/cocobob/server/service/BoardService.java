@@ -19,7 +19,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
 
     @Transactional
-    public Page<Board> getBoardList(Pageable pageable){
+    public Page<Board> getBoardList(Pageable pageable) {
         return boardRepository.findAll(pageable);
     }
 
@@ -34,14 +34,14 @@ public class BoardService {
 
     /* 조회수 카운트 */
     @Transactional
-    public int updateView(Long id){
+    public int updateView(Long id) {
         return boardRepository.updateView(id);
     }
 
     /* 검색 기능 */
     @Transactional
-    public Page<Board> search(String keyword,Pageable pageable){
-       Page<Board> BoardList = boardRepository.findAllSearch(keyword,pageable);
-       return BoardList;
+    public Page<Board> search(String keyword, Pageable pageable) {
+        Page<Board> BoardList = boardRepository.findAllSearch(keyword, pageable);
+        return BoardList;
     }
 }
