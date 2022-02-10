@@ -51,6 +51,8 @@ public class MailService {
 
             Optional<UserDTO> dto = Optional.ofNullable(UserDTO.from(user));
 
+            userRepository.save(user);
+
             return dto.get();
         }
         else {
