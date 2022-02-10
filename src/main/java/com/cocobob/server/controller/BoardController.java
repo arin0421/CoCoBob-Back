@@ -35,6 +35,7 @@ public class BoardController {
     }
 
     @GetMapping("/api/boards/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public Board getBoard(@PathVariable Long id){
         Optional<Board> board = boardRepository.findById(id);
         boardService.updateView(id);
@@ -47,11 +48,13 @@ public class BoardController {
     }
 
     @PutMapping("/api/boards/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public Long updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto requestDto){
         return boardService.update(id,requestDto);
     }
 
     @DeleteMapping("/api/boards/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public Long deleteBoard(@PathVariable Long id){
         boardRepository.deleteById(id);
         return id;
